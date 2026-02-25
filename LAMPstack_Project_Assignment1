@@ -1,0 +1,70 @@
+#!/bin/bash
+
+ssh -i "Sams.pem" ubuntu@ec2-35-153-181-69.compute-1.amazonaws.com
+# to change the permissions to the key use:
+ chmod 400 Sams.pem
+
+# INSTALLING APACHE AND UPDATING THE FIREWALL
+# Update and Ugrade packages in the package manager
+sudo apt update
+sudo apt upgrade
+sudo apt install apache2 
+# Reboot the system
+sudo reboot
+# Check if apache2 is running
+sudo systemctl status apache2
+
+# Connect to the instance using: ec2-35-153-181-69.compute-1.amazonaws.com
+apache_display_working.PNG
+
+# INSTALLING MYSQL
+sudo apt install mysql-server
+# log into mysql console
+sudo mysql
+# set password for the root user
+ALTERUSER'CREATE USER 'username'@'localhost' IDENTIFIED BY 'Akanmu_1'
+exit;
+# run security script which removes insecure defaults
+sudo mysql_secure_installation
+# log into Mysql console
+mysql root -p
+# create new user
+mysql -u root -p
+
+# INSTALLING PHP
+sudo apt install php
+php -v
+
+# CREATING A VIRTUAL HOST FOR WEBSITE USING APACHE
+
+mkdir /var/www/Project_Lamp
+sudo chown -R $USER:$USER /var/www/Project_Lamp
+# create and configuration file in apache's sites-available
+sudo vi /etc/apache2/sites-available/Project_Lamp.conf
+# input the following:
+<VirtualHost *:80>
+ServerName Project_Lamp
+ServerAlias www.Project_Lamp
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/Project_Lamp
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+sudo ls /etc/apache2/sites-available
+sudo a2ensite Project_Lamp
+sudo a2dissite 000-default
+sudo apache2ctl configtest
+sudo systemctl reload apache2
+virtual_server.PNG
+# Enable PHP on the Website
+sudo vi /etc/apache2/mods-enabled/dir.conf
+# input the following:
+sudo systemctl reload apache2
+# Create index.php inside custom folder
+sudo vi /var/www/Project_Lamp/index.php
+# Input this:
+<?php
+phpinfo();
+php_display.PNG
+sudo rm /var/www/Project_Lamp/index.php
+
