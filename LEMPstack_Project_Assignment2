@@ -1,0 +1,113 @@
+# Update the packages
+sudo apt Update
+# Upgrade the packages
+sudo apt Upgrade
+# Install Nginx
+sudo apt Install Nginx
+# check if the app is installed
+sudo systemctl status Nginx
+# Install mysql server
+sudo apt install mysql-server
+ALTERUSER 'root'@'localhost' IDENTIFIED WITH msql_native_password BY 'PassWord.1';
+exit;
+sudo mysql_secure_installation
+sudo mysql -p
+# Displays database
+show databases;
+# Install PHP
+sudo apt install php-fpm php-mysql -y
+# Configure nginx to use php processor
+sudo mkdir /var/www/LEMP_Project
+ls -l /var/www/
+sudo chown -R $USER:$USER /var/www/LEMP_Project
+ls -l /var/www/
+sudo vi /etc/nginx/sites-available/LEMP_Project
+
+#Input to this place the command below:/etc/nginx/sites-available/LEMP_Project
+server {
+    listen 80;
+    server_name LEMP_Project www.LEMP_Project;
+    root /var/www/LEMP_Project;
+
+    index index.html index.htm index.php,
+    
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+    }
+    location ~ /\.ht {
+        deny all;
+    }
+
+}
+sudo cat /etc/nginx/sites-available/LEMP_Project
+# Enable directory
+ls /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/LEMP_Project /etc/nginx/sites-enabled
+sudo nginx -t
+# Disable default nginx host currently configured
+sudo unlink /etc/nginx/sites-enabled/default
+ls /etc/nginx/sites-enabled
+sudo systemctl reload nginx
+# Input token
+$ (TOKEN= curl -X PUT "http://172.31.10.58/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds
+: 21600" && curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://172.31.10.58/latest/metadata/public-hostname)
+cat /var/www/LEMP_Project/index.html
+# input: 
+sudo echo 'Hello LEMP from hostname' $(TOKEN= curl -X PUT "http://172.31.10.58/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds
+: 21600" && curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://172.31.10.58/latest/metadata/public-hostname)
+'with public IP' $(TOKEN= curl -X PUT "http://172.31.10.58/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds
+: 21600" && curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://172.31.10.58/latest/metadata/public-ipv4) > /var/www/LEMP_Project/idex.html
+sudo vi /var/www/LEMP_Project/info.php
+<?php
+phpinfo();
+sudo rm /var/www/LEMP_Project/info.php
+# Retrieve Data from MysQL
+sudo mysql -p
+create database olu_database;
+create user 'olu_user'@'%' identified with mysql_native_password by 'PassWord.1'
+GRANT ALL ON olu_database.* TO olu_user'@'%';
+show databases;
+exit;
+sudo mysql -u olu_user -p
+show databases;
+
+# Create tables
+CREATE TABLE olu_database.todo_list (
+    item_id INT AUTO_INCREMENT,
+    content VARCHAR(255),
+    PRIMARY KEY(item_id)
+  );
+    use olu_datase
+    show tables;
+    select * from todo_list;
+    NSERT INTO olu_database.todo_list (content) values ("my first important item");I
+NSERT INTO olu_database.todo_list (content) values ("meet with team");
+NSERT INTO olu_database.todo_list (content) values ("meet with friends");
+select * from todo_list;
+exit;
+vi /var/www/LEMP_Project/todo_list.php
+<?php
+$user = "olu_user";
+$password = "PassWord.1";
+$database = "olu_database";
+$table = "todo_list";
+
+try {
+    $db = new PDO("mysql:host=localhost;dbname=database", $user, $password);
+    echo"<h2>TODO</h2><o1>";
+    foreach($db->query("SELECT content FROM $table") as $row) {
+        echo "<li>" . $row['content'] . </li>;
+    }
+    echo "</ol>";
+} catch (PDOException $e) {
+    print "Error!: " .$e->getmessage() . "<br/>";
+    die();
+    
+}
+# go to the url and add todo_list
+ls -l /var/www/LEMP_Project
