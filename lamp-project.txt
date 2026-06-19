@@ -1,1 +1,1 @@
-https://github.com/Psalms19/AWS_PROJECTS.git
+Apache setup and running:https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#InstanceDetails:instanceId=i-01e0e1d7af7360980

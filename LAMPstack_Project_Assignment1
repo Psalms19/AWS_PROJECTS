@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ssh -i "Sams.pem" ubuntu@ec2-35-153-181-69.compute-1.amazonaws.com
+ssh -i "LAMP.pem" ubuntu@ec2-44-220-137-21.compute-1.amazonaws.com
 # to change the permissions to the key use:
- chmod 400 Sams.pem
+ chmod 400 LAMP.pem
 
 # INSTALLING APACHE AND UPDATING THE FIREWALL
 # Update and Ugrade packages in the package manager
@@ -12,17 +12,20 @@ sudo apt install apache2
 # Reboot the system
 sudo reboot
 # Check if apache2 is running
+sudo systemctl start apache2
 sudo systemctl status apache2
+sudo systemctl enable apache2
 
-# Connect to the instance using: ec2-35-153-181-69.compute-1.amazonaws.com
+# Connect to the instance using: 44.220.137.21.
 apache_display_working.PNG
 
 # INSTALLING MYSQL
 sudo apt install mysql-server
+sudo mysql_secure_installationsudo mysql
 # log into mysql console
 sudo mysql
 # set password for the root user
-ALTERUSER'CREATE USER 'username'@'localhost' IDENTIFIED BY 'Akanmu_1'
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Password.1';
 exit;
 # run security script which removes insecure defaults
 sudo mysql_secure_installation
@@ -32,26 +35,37 @@ mysql root -p
 mysql -u root -p
 
 # INSTALLING PHP
-sudo apt install php
+sudo apt install php libapache2-mod-php php-mysql
+
 php -v
 
 # CREATING A VIRTUAL HOST FOR WEBSITE USING APACHE
 
-mkdir /var/www/Project_Lamp
-sudo chown -R $USER:$USER /var/www/Project_Lamp
+mkdir /var/www/html/LAMPstack
+chown -R $USER:$USER /var/www/html/LAMPstack
+# create a sample page or info.php page
+vi /var/www/html/LAMPstack/info.php
+# input 
+<?php
+phpinfo();
+?>
+ls /var/www/html/LAMPstack
+
 # create and configuration file in apache's sites-available
-sudo vi /etc/apache2/sites-available/Project_Lamp.conf
+sudo vi /etc/apache2/sites-available/LAMPstack.conf
+sudo vi /var /www/html/LAMPstack
 # input the following:
 <VirtualHost *:80>
-ServerName Project_Lamp
-ServerAlias www.Project_Lamp
+ServerName LAMPstack
+ServerAlias www.LAMPstack
 ServerAdmin webmaster@localhost
-DocumentRoot /var/www/Project_Lamp
+DocumentRoot /var/www/LAMPstack
 ErrorLog ${APACHE_LOG_DIR}/error.log
 CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+
 sudo ls /etc/apache2/sites-available
-sudo a2ensite Project_Lamp
+a2ensite LAMPstack.conf
 sudo a2dissite 000-default
 sudo apache2ctl configtest
 sudo systemctl reload apache2
@@ -67,4 +81,5 @@ sudo vi /var/www/Project_Lamp/index.php
 phpinfo();
 php_display.PNG
 sudo rm /var/www/Project_Lamp/index.php
+
 
