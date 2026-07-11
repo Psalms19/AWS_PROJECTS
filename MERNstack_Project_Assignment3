@@ -1,18 +1,31 @@
+#!/bin/bash
+
+# update packages
+sudo apt update
+# upgrade packages
+sudo apt upgrade
+
 # use this to check if node version is supported if not go to website to get latest version
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 # Install Node js on ubuntu
-sudo apt-get install -y nodejs
+sudo apt install nodejs -u
 node -v
+npm -v
+
 # create a folder
 mkdir todo
 cd todo
-sudo apt install npm
 npm init
-todo, steghub todo application, psalmist, yes
+npm -v
+# use this immediately after npm init
+todo, todo, steghub todo app, index.js, psalmist
 ls
 cat package.json
-# Install ExpressJs
+
+# Install ExpressJs and dotenv
 npm install express
+sudo npm Install dotenv
+
 # create index.js file
 vi index.js:
 const express = require('express');
@@ -23,44 +36,53 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use((req, res, next) => {
-res.header("Access-Control-Allow-Origin" "\*");
-res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With/ Content-type, Accept");
+res.header("Access-Control-Allow-Origin", "\*");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-type, Accept")
 next();
 });
 
 app.use((req, res, next) => {
 res.send('Welcome to Express');
 });
-
 app.listen(port, () => {
-console.log('Server running on port ${port}')
-})
+console.log(`Server running on port ${port}`)
+});
 
-npm Install dotenv
 node index.js express welcomepage.png
-# create route folder
+ls node_modules
+# create a folder for standard request
 mkdir routes
 cd routes
 vi api.js
-const express = require('express');
+const express = require ('express');
 const router = express.Router();
-router.get('/todos', (req, res, next) => {
-});
-router.post('/todos', (req, res, next) => {
-});
-router.delete('/todos', (req, res, next) => {
-});
-modular.exports = router;
 
+router.get('/todos', (req, res, next) => {
+
+});
+
+router.post('/todos', (req, res, next) => {
+
+});
+
+router.delete('/todos/:id', (req, res, next) => {
+
+});
+
+module.exports = router;
+
+cat api.js
 cd ..
 npm install mongoose
+npm list mongoose
 mkdir models && cd models && touch todo.js
+cd models
 vi todo.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //create Schema for todo
-const TodoSchema = new schema ({
+const TodoSchema = new schema({
 action: {
 type: string,
 required: [true, 'The todo text field is required']
@@ -72,10 +94,11 @@ const todo mongoose.model('todo', TodoSchema);
 
 module.export = Todo;
 
-# goto routes folder
-cd ../routes
+cd ../routes 
 vi api.js
-replce With:
+
+# delete api.js file content and input the following:
+
 const express = require('express');
 const router = express.Router();
 const Todo = require('../models/todo');
@@ -83,7 +106,7 @@ const Todo = require('../models/todo');
 router.get('/todos', (req, res, next) => {
 
 //this will return all the data, exposing only the id and action field to the client
-Todo.find{, action)
+Todo.find({}, 'action')
 .then(data => res.jason(data))
 .catch(next)
 });
@@ -91,48 +114,67 @@ Todo.find{, action)
 router.post('/todos', (req, res, next) => {
 if(req.body.action){
 Todo.create(req.body)
-.then(data => res.jason(data))
-,catch(next)
-}else{
+.then(data => req.jason(data))
+.catch(next)
+}else {
 res.jason({
 error: "The input field is empty"
-
 })
 }
-});
 
-router.delete('/todos/id:, (req, res, next) => {
-Todo.findOneAdDelete({"_id": req.params.id})
+router.delete('/todos/:id', (req, res, next) => {
+Todo.findOneAndDelete({"_id": req.params.id})
 .then(data => res.jason(data))
 .catch(next)
 })
-modular.exports = router;
 
-# Configure MongoDb cluster and deployment: go to mLab
-signup for a free cluster account. follow signup process and select AWS
-as cloud provider. choose a region near you.
-# create a .env file
-cd todo
-vi .env: copy and paste connection string from mongoDb Server
-# create index.js, then input:
+module.exports =router
+
+# create mongoDB database on cloud ans get it connected
+# create a cluster on the mongoDB cloud
+# click the free tier and create a cluster
+# create deployment
+# after deploying cluster, configure network access for mongoDB
+# create the dotenv file inside todo folder and input:
+mongodb+srv://<db_username>:CXFqMXX31XS3tf2l@cluster0.cijevc3.mongodb.net/?appName=Cluster0
+cd .. && vi .env
+
+# edit the index.js file and input the following:
+
 const express = require('express');
+const routes = require('./routes/api');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
 const port = process.env.PORT || 5000;
 
-APP.use((req, res, next) => {
-res.header("Access-Control-Allow-Origin", "\*")
-res.header("Access-Control-Allow-Headers","Origin, X-Requested-with, Content-type, Accept");
+//connect to the database
+mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => console.log('Database connected successfully'))
+.catch(err => console.log(err));
+
+//since mongoose promise is depreciated, we overide it with node's promise
+mongoose.Promise = global.Promise
+
+app.use((req, res, next) => {
+res.header("Access-Control-Origin", "\*");
+res.header("Access-Control-Header", "Origin, X-Requested-With, Content-Type, Accept");
 next();
 });
 
-app.use((req, res, next) => {
-res.send('welcome to Express');
+app.use(bodyParser.json());
+
+app.use('/api', routes);
+
+app.use((err, req, res, next) => {
+console.log(err);
+next();
 });
 
 app.listen(port, () => {
 console.log('Server running on port ${port}')
-});
-node index.js
+}); 
+ls
+node -v
