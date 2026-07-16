@@ -50,6 +50,7 @@ console.log(`Server running on port ${port}`)
 
 node index.js express welcomepage.png
 ls node_modules
+
 # create a folder for standard request
 mkdir routes
 cd routes
@@ -72,6 +73,8 @@ router.delete('/todos/:id', (req, res, next) => {
 module.exports = router;
 
 cat api.js
+
+# Install mongoose and create a model for todo
 cd ..
 npm install mongoose
 npm list mongoose
@@ -94,11 +97,11 @@ const todo mongoose.model('todo', TodoSchema);
 
 module.export = Todo;
 
+# Update the api.js file to include the model and implement the CRUD operations
 cd ../routes 
 vi api.js
 
 # delete api.js file content and input the following:
-
 const express = require('express');
 const router = express.Router();
 const Todo = require('../models/todo');
@@ -121,6 +124,7 @@ res.jason({
 error: "The input field is empty"
 })
 }
+})
 
 router.delete('/todos/:id', (req, res, next) => {
 Todo.findOneAndDelete({"_id": req.params.id})
@@ -128,7 +132,7 @@ Todo.findOneAndDelete({"_id": req.params.id})
 .catch(next)
 })
 
-module.exports =router
+module.exports = router
 
 # create mongoDB database on cloud ans get it connected
 # create a cluster on the mongoDB cloud
@@ -138,10 +142,13 @@ module.exports =router
 # create the dotenv file inside todo folder and input:
 mongodb+srv://<db_username>:CXFqMXX31XS3tf2l@cluster0.cijevc3.mongodb.net/?appName=Cluster0
 cd .. && vi .env
+mongodb+srv://bostec29_db_user:OlsyEnYOabLax5jz@cluster0.4zfi4lm.mongodb.net
 
 # edit the index.js file and input the following:
-
+vi index.js
 const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const routes = require('./routes/api');
 const path = require('path');
 require('dotenv').config();
@@ -151,16 +158,16 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //connect to the database
-mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => console.log('Database connected successfully'))
+mongoose.connect(process.env.DB)
+.then(() => console.log(`Database connected successfully`))
 .catch(err => console.log(err));
 
 //since mongoose promise is depreciated, we overide it with node's promise
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 
 app.use((req, res, next) => {
-res.header("Access-Control-Origin", "\*");
-res.header("Access-Control-Header", "Origin, X-Requested-With, Content-Type, Accept");
+res.header("Access-Control-Allow-Origin", "\*");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 next();
 });
 
@@ -174,7 +181,13 @@ next();
 });
 
 app.listen(port, () => {
-console.log('Server running on port ${port}')
-}); 
-ls
-node -v
+console.log(`Server running on port ${port}`)
+});
+
+# create a .env file and input the following:
+DB=mongodb+srv://bostec29_db_user:OlsyEnYOabLax5jz@cluster0.4zfi4lm.mongodb.net
+node index.js
+
+# test the api using postman
+# from the Header choose content type and select application/json
+# under Database and Network select IP access list to add another IP address to allow access to the database
