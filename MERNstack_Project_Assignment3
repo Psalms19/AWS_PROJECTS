@@ -200,3 +200,15 @@ node index.js
 # test the api using postman
 # from the Header choose content type and select application/json
 # under Database and Network select IP access list to add another IP address to allow access to the database
+using postman.png
+
+# Frontend creating react app. run the following command in the todo folder
+npx create-react-app client
+# when the react client folder is created delete, then use vite to create new react app
+rm -rf client
+npm create vite@latest client
+# select react as the framework and javascript as the language
+ls client
+
+# install concurrently and nodemon to run both backend and frontend together
+npm install concurrently nodemon --save-dev
