@@ -199,7 +199,7 @@ node index.js
 
 # test the api using postman
 # from the Header choose content type and select application/json
-# under Database and Network select IP access list to add another IP address to allow access to the database
+# in the mongodb under Database and Network select IP access list to add another IP address to allow access to the database
 using postman.png
 
 # Frontend creating react app. run the following command in the todo folder
