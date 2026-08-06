@@ -1,1 +1,58 @@
+# update 
+sudo apt update
+# upgrade 
+sudo apt upgrade -y
+# add certificate
+sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates
+# check for the latest version 
+curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+# Install node JS
+sudo apt nodejs -y
+node -v
+# install mongoDB. install the keys first
+sudo apt -get install -y gnupg curl
+curl -fsSl https://pgp.mongodb.com/server-8.0.asc | \sudo gpg -o /usr/share/keyrings/mongodb-server 8.0.gpg\ --dearmor 
+ # add mongodb packages
+     sudo apt -get install gnupg curl
+sudo apt update
+sudo apt insatll mongodb-org -y
+sudo systemctl status mongod
+sudo systemctl start mongod
+# install npm
+sudo apt update
+sudo apt install npm
+sudo apt update
+sudo npm install body-parser
+# create books folder and initialize npm
+mkdir Books && cd Books
+init npm
+cat package.json
+vi server.js:
 
+cat server.js
+# install express and setup server route
+npm install express mongoose
+# create an app folder
+mkdir apps && cd apps
+vi routes.js:
+
+cat routes.js
+# create a new foder: models
+mkdir models && cd models
+vi book.js:
+
+cat book.js
+cd ../..
+mkdir public && cd public
+vi scripts.js:
+
+cat scripts.js
+vi index.js:
+
+cat index.html:
+
+cat index.html
+cd ..
+node server.js
+# goto aws instance and add new inbound security set the port to 3300
+# connect to instance using pulic ip:3300
