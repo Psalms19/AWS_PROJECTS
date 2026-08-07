@@ -1,3 +1,4 @@
+# Implementing a simple book regiser using MEAN stack.
 # update 
 sudo apt update
 # upgrade 
@@ -7,22 +8,29 @@ sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates
 # check for the latest version 
 curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 # Install node JS
-sudo apt nodejs -y
+sudo apt install nodejs -y
 node -v
-# install mongoDB. install the keys first
-sudo apt -get install -y gnupg curl
-curl -fsSl https://pgp.mongodb.com/server-8.0.asc | \sudo gpg -o /usr/share/keyrings/mongodb-server 8.0.gpg\ --dearmor 
- # add mongodb packages
-     sudo apt -get install gnupg curl
-sudo apt update
-sudo apt insatll mongodb-org -y
-sudo systemctl status mongod
-sudo systemctl start mongod
 # install npm
 sudo apt update
 sudo apt install npm
 sudo apt update
 sudo npm install body-parser
+# install mongoDB. install the repository keys first
+sudo apt-get install -y gnupg curl
+curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
+   --dearmor
+ # add the mongodb repository package to the ubuntu package list
+ echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+ sudo apt update
+ # add mongodb packages
+sudo apt install gnupg curl
+sudo apt update
+sudo apt install mongodb-org -y
+mongod --version
+sudo systemctl status mongod
+sudo systemctl start mongod
+
 # create books folder and initialize npm
 mkdir Books && cd Books
 init npm
