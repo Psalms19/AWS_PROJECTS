@@ -13,20 +13,19 @@ node -v
 # install npm
 sudo apt update
 sudo apt install npm
-sudo apt update
+npm -v
 sudo npm install body-parser
 # install mongoDB. install the repository keys first
 sudo apt-get install -y gnupg curl
-curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
-   sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
+curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
    --dearmor
- # add the mongodb repository package to the ubuntu package list
- echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
- sudo apt update
- # add mongodb packages
+ 
+ # add mongodb packages and repository to the ubuntu package list
 sudo apt install gnupg curl
-sudo apt update
+ echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
 sudo apt install mongodb-org -y
+sudo apt update
 mongod --version
 sudo systemctl status mongod
 sudo systemctl start mongod
